@@ -8,6 +8,7 @@ html {
 
 html, body, #root {
   height: 100%;
+	overflow: auto;
 }
 
 body {
@@ -48,8 +49,7 @@ button:hover {
   min-width: 230px;
 	max-width: 550px;
   margin: 0 auto;
-  height: 100%;
-  overflow: auto;
+  height: fit-content;
 }
 
 .main-header h1 {
@@ -297,7 +297,8 @@ button:hover {
 }
 
 .main-footer {
-	margin: 65px auto 0;
+	margin: 60px auto 0;
+	padding-bottom: 10px;
 	color: #4d4d4d;
 	font-size: 11px;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
