@@ -1,11 +1,23 @@
-const TodoItem = ({ todoObj, destroyItem }) => {
+import React from "react"
+
+const TodoItem = ({ todoObj, destroyItem, toggleCompletion }) => {
   const handleDestroyItem = () => {
     destroyItem(todoObj.id)
   }
+
+  const handleToggleCompletion = () => {
+    toggleCompletion(todoObj.id)
+  }
+
   return (
-    <div className="todo-item">
-      {/*<input id={todoObj.id} type="checkbox" />*/}
-      <label htmlFor={todoObj.id}>{todoObj.description}</label>
+    <div id={todoObj.id} className={`todo-item${todoObj.completed === true ? " completed" : ""}`}>
+      <input
+        id="toggle-box"
+        className="toggle-box"
+        type="checkbox"
+        onChange={handleToggleCompletion}
+        checked={todoObj.completed} />
+      <label htmlFor="toggle-box">{todoObj.description}</label>
       <button onClick={handleDestroyItem} className="destroy"></button>
     </div>
   )

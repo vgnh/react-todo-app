@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import TodoItem from './TodoItem'
+import TodoItem from './TodoItem.js'
 
-const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoById, clearCompletedTodos }) => {
+const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoById, clearCompletedTodos, toggleCompletionById, completedNum }) => {
   const [newTodo, setNewTodo] = useState('')
   const [filter, setFilter] = useState('all')
 
@@ -10,7 +10,7 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
   }
 
   const filteredList = (using) => {
-    switch(using) {
+    switch (using) {
       case "all": return todoList
       case "completed": return todoList.filter(todoObj => todoObj.completed === true)
       case "active": return todoList.filter(todoObj => todoObj.completed !== true)
@@ -39,6 +39,10 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
     removeTodoById(id)
   }
 
+  const handleToggleCompletion = (id) => {
+    toggleCompletionById(id)
+  }
+
   const handleClearCompleted = () => {
     clearCompletedTodos()
   }
@@ -61,9 +65,7 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
           {
             filteredList(filter).map((todoObj, index) =>
               <li key={index}>
-                <TodoItem
-                  todoObj={todoObj}
-                  destroyItem={handleDestroyItem} />
+                <TodoItem todoObj={todoObj} destroyItem={handleDestroyItem} toggleCompletion={handleToggleCompletion} />
               </li>
             )
           }
@@ -78,7 +80,7 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
             <li id="completed" className="" onClick={() => switchFilterTo("completed")}>Completed</li>
           </ul>
           <button className="clear-completed-button" onClick={handleClearCompleted}>
-            Clear completed ({todoList.filter(todo => todo.completed === true).length})
+            Clear completed ({completedNum})
           </button>
         </div>
       </div>

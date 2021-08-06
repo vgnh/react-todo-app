@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react"
-import Header from "./components/Header"
-import Footer from "./components/Footer"
-import TodoApp from "./components/TodoApp"
+import Header from "./components/Header.js"
+import Footer from "./components/Footer.js"
+import TodoApp from "./components/TodoApp.js"
 
 const App = () => {
   const LIST_KEY = "self.todoList"
 
   const [todoList, setTodoList] = useState([])
+  const [completedNum, setCompletedNum] = useState(todoList.filter(todo => todo.completed === true).length)
   const todoWrapperVisibility = () => todoList.length !== 0 ? true : false
   const updateTodoList = (list) => {
     setTodoList(list)
     window.localStorage.setItem(LIST_KEY, JSON.stringify(list))
+    setCompletedNum(list.filter(todo => todo.completed === true).length)
   }
 
   const createNewTodo = (todoObj) => {
@@ -26,21 +28,28 @@ const App = () => {
       return randStr(5) + window.crypto.getRandomValues(new Uint32Array(1)).toString(16)
     }
 
-    const newTodoObj = {
+    const newTodo = {
       ...todoObj,
       id: randomId()
     }
-    const newList = todoList.concat(newTodoObj)
+    const newList = todoList.concat(newTodo)
     updateTodoList(newList)
   }
 
   const removeTodoById = (id) => {
-    const newList = todoList.filter(todoObj => todoObj.id !== id)
+    const newList = todoList.filter(todo => todo.id !== id)
+    updateTodoList(newList)
+  }
+
+  const toggleCompletionById = (id) => {
+    const newList = todoList
+    const indexOfId = newList.indexOf(newList.find(todo => todo.id === id))
+    newList[indexOfId].completed = !newList[indexOfId].completed
     updateTodoList(newList)
   }
 
   const clearCompletedTodos = () => {
-    const newList = todoList.filter(todoObj => todoObj.completed === false)
+    const newList = todoList.filter(todo => todo.completed === false)
     updateTodoList(newList)
   }
 
@@ -50,6 +59,7 @@ const App = () => {
     if (selfTodoListJSON) {
       const parsedList = JSON.parse(selfTodoListJSON)
       setTodoList(parsedList)
+      setCompletedNum(parsedList.filter(todo => todo.completed === true).length)
     }
     else {
       window.localStorage.setItem(LIST_KEY, JSON.stringify([]))
@@ -64,7 +74,9 @@ const App = () => {
         todoWrapperVisibility={todoWrapperVisibility}
         createNewTodo={createNewTodo}
         removeTodoById={removeTodoById}
-        clearCompletedTodos={clearCompletedTodos} />
+        clearCompletedTodos={clearCompletedTodos}
+        toggleCompletionById={toggleCompletionById}
+        completedNum={completedNum} />
       <Footer />
     </div>
   )
