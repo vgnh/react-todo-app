@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import TodoItem from './TodoItem.js'
 
-const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoById, clearCompletedTodos, toggleCompletionById, completedNum, updateDescriptionOf }) => {
+const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoById, clearCompletedTodos, toggleCompletionById, completedNum, updateDescriptionOf, toggleCompletedAllFrom }) => {
   const [newTodo, setNewTodo] = useState('')
   const [filter, setFilter] = useState('all')
 
@@ -45,6 +45,15 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
 
   const handleClearCompleted = () => {
     clearCompletedTodos()
+  }
+
+  const handleToggleAll = () => {
+    toggleCompletedAllFrom(filteredList(filter))
+  }
+
+  const toggleAllChecked = () => {
+    const list = filteredList(filter)
+    return list.some(todo => todo.completed === false) || list.length === 0 ? false : true
   }
 
   const handleDoubleClickOnLi = (todoObj) => {
@@ -96,7 +105,7 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
         placeholder="What needs to be done?"
         onKeyPress={handleCreateNewTodo} />
       <div style={todoWrapperStyle} className="todo-wrapper">
-        <input id="toggle-all" type="checkbox" className="toggle-all" />
+        <input id="toggle-all" type="checkbox" className="toggle-all" onChange={handleToggleAll} checked={toggleAllChecked()} />
         <label htmlFor="toggle-all"></label>
         <ul className="todo-list">
           {

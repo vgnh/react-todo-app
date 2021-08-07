@@ -55,6 +55,25 @@ const App = () => {
     updateTodoList(newList)
   }
 
+  const toggleCompletedAllFrom = (list) => {
+    const atleastOneNotCompleted = list.find(todo => todo.completed === false)
+    const newList = todoList
+    if (atleastOneNotCompleted) {
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].completed === false) {
+          newList.find(todo => todo.id === list[i].id).completed = true
+        }
+      }
+    }
+    else {
+      // If everything is already completed, then toggle to !completed
+      for (let i = 0; i < list.length; i++) {
+        newList.find(todo => todo.id === list[i].id).completed = false
+      }
+    }
+    updateTodoList(newList)
+  }
+
   const clearCompletedTodos = () => {
     const newList = todoList.filter(todo => todo.completed === false)
     updateTodoList(newList)
@@ -84,7 +103,8 @@ const App = () => {
         clearCompletedTodos={clearCompletedTodos}
         toggleCompletionById={toggleCompletionById}
         completedNum={completedNum}
-        updateDescriptionOf={updateDescriptionOf} />
+        updateDescriptionOf={updateDescriptionOf}
+        toggleCompletedAllFrom={toggleCompletedAllFrom} />
       <Footer />
     </div>
   )
