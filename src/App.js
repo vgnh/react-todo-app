@@ -41,6 +41,13 @@ const App = () => {
     updateTodoList(newList)
   }
 
+  const updateDescriptionOf = (id, editedText) => {
+    const newList = todoList
+    const indexOfId = newList.indexOf(newList.find(todo => todo.id === id))
+    newList[indexOfId].description = editedText
+    updateTodoList(newList)
+  }
+
   const toggleCompletionById = (id) => {
     const newList = todoList
     const indexOfId = newList.indexOf(newList.find(todo => todo.id === id))
@@ -76,7 +83,8 @@ const App = () => {
         removeTodoById={removeTodoById}
         clearCompletedTodos={clearCompletedTodos}
         toggleCompletionById={toggleCompletionById}
-        completedNum={completedNum} />
+        completedNum={completedNum}
+        updateDescriptionOf={updateDescriptionOf} />
       <Footer />
     </div>
   )

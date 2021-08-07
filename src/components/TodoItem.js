@@ -10,14 +10,13 @@ const TodoItem = ({ todoObj, destroyItem, toggleCompletion }) => {
   }
 
   return (
-    <div id={todoObj.id} className={`todo-item${todoObj.completed === true ? " completed" : ""}`}>
+    <div className={`todo-item${todoObj.completed === true ? " completed" : ""}`}>
       <input
-        id="toggle-box"
         className="toggle-box"
         type="checkbox"
         onChange={handleToggleCompletion}
         checked={todoObj.completed} />
-      <label htmlFor="toggle-box">{todoObj.description}</label>
+      <label id={`${todoObj.id}label`}>{todoObj.description}</label>
       <button onClick={handleDestroyItem} className="destroy"></button>
     </div>
   )

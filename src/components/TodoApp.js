@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import TodoItem from './TodoItem.js'
 
-const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoById, clearCompletedTodos, toggleCompletionById, completedNum }) => {
+const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoById, clearCompletedTodos, toggleCompletionById, completedNum, updateDescriptionOf }) => {
   const [newTodo, setNewTodo] = useState('')
   const [filter, setFilter] = useState('all')
 
@@ -47,6 +47,43 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
     clearCompletedTodos()
   }
 
+  const handleDoubleClickOnLi = (todoObj) => {
+    // Add "editing" to <li>
+    document.getElementById(todoObj.id).classList.add("editing")
+    // Add style changes to the hidden input
+    const liInput = document.getElementById(`${todoObj.id}hidden`)
+    liInput.classList.add("edit")
+    liInput.type = "text"
+    liInput.value = todoObj.description
+    liInput.focus()
+  }
+
+  const handleHiddenEnter = (event, id) => {
+    if (event.key === "Enter") {
+      const editedText = event.target.value
+      if (editedText !== '') {
+        // If text is present, update todo
+        updateDescriptionOf(id, editedText)
+
+        // Update label as well because it doesn't update until refresh
+        document.getElementById(`${id}label`).textContent = editedText
+      }
+      else {
+        // If text has been erased completely, remove todo
+        removeTodoById(id)
+      }
+
+      // Reverse style changes
+      // Remove "editing" from the <li>
+      document.getElementById(id).classList.remove("editing")
+      // Remove changes from the hidden input
+      const liInput = document.getElementById(`${id}hidden`)
+      liInput.classList.remove("edit")
+      liInput.type = "hidden"
+      liInput.value = ""
+    }
+  }
+
   return (
     <main className="todo-app">
       <input
@@ -64,8 +101,13 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
         <ul className="todo-list">
           {
             filteredList(filter).map((todoObj, index) =>
-              <li key={index}>
+              <li id={todoObj.id} key={index} onDoubleClick={() => handleDoubleClickOnLi(todoObj)} className="">
                 <TodoItem todoObj={todoObj} destroyItem={handleDestroyItem} toggleCompletion={handleToggleCompletion} />
+                <input
+                  id={`${todoObj.id}hidden`}
+                  type="hidden"
+                  className="hidden-input"
+                  onKeyPress={(event) => handleHiddenEnter(event, todoObj.id)} />
               </li>
             )
           }
