@@ -28,8 +28,7 @@ const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoByI
     if (event.key === "Enter" && newTodo !== '') {
       createNewTodo({
         description: newTodo,
-        completed: false,
-        editing: false
+        completed: false
       })
       setNewTodo('')
     }
