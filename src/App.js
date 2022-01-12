@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import Header from "./components/Header.js"
 import Footer from "./components/Footer.js"
 import TodoApp from "./components/TodoApp.js"
+import { v4 as uuidv4 } from "uuid"
 
 const App = () => {
   const LIST_KEY = "self.todoList"
@@ -16,21 +17,9 @@ const App = () => {
   }
 
   const createNewTodo = (todoObj) => {
-    const randomId = () => {
-      const randCharCode = () => Math.floor(Math.random() * (123 - 97) + 97)
-      const randAlphabet = () => String.fromCharCode(randCharCode())
-      const randStr = (len) => {
-        let s = ''
-        for (let i = 0; i < len; i++)
-          s = s.concat(randAlphabet())
-        return s
-      }
-      return randStr(5) + window.crypto.getRandomValues(new Uint32Array(1)).toString(16)
-    }
-
     const newTodo = {
       ...todoObj,
-      id: randomId()
+      id: uuidv4()
     }
     const newList = todoList.concat(newTodo)
     updateTodoList(newList)
