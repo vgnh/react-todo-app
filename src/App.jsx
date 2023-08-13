@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
-import Header from "./components/Header.js"
-import Footer from "./components/Footer.js"
-import TodoApp from "./components/TodoApp.js"
+import Header from "./components/Header.jsx"
+import Footer from "./components/Footer.jsx"
+import TodoApp from "./components/TodoApp.jsx"
 import { v4 as uuidv4 } from "uuid"
 
 const App = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import TodoItem from './TodoItem.js'
+import TodoItem from './TodoItem.jsx'
 
 const TodoApp = ({ todoList, todoWrapperVisibility, createNewTodo, removeTodoById, clearCompletedTodos, toggleCompletionById, completedNum, updateDescriptionOf, toggleCompletedAllFrom }) => {
   const [newTodo, setNewTodo] = useState('')
